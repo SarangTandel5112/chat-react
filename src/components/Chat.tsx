@@ -4,6 +4,7 @@ import axios from 'axios';
 import SingleChat from './SingleChat';
 import SampleChat from './SampleChat';
 import { Link, Outlet } from 'react-router-dom';
+import { Button, Collapse, Form, InputGroup } from 'react-bootstrap';
 
 function Chat() {
 
@@ -12,6 +13,8 @@ function Chat() {
     const [chat, setChat] = useState([])
     const [receiver, setReceiver] = useState()
     const [userName, setUserName]: any = useState()
+
+    const [open, setOpen] = useState(false);
 
     // const onMsgReceive = async (data:any) => {
     //     console.log(data, '=========data.senderId ============');
@@ -52,10 +55,24 @@ function Chat() {
                                 </li>
                             }
                             <div className="input-group">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text"><i className="fa fa-search"></i></span>
-                                </div>
-                                <input type="text" className="form-control" placeholder="Search..." />
+
+                                <InputGroup className="mb-3">
+                                    <Collapse in={open} dimension="width">
+                                        <Form.Control
+                                            id="example-collapse-text"
+                                        />
+                                    </Collapse>
+                                    <Button
+                                        variant="secondary"
+                                        id="button-addon2"
+                                        onClick={() => setOpen(!open)}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={open}
+                                    >
+                                        <i className="fa fa-search"></i>
+                                    </Button>
+                                </InputGroup>
+
                             </div>
                             <ul className="list-unstyled chat-list mt-2 mb-0">
                                 {

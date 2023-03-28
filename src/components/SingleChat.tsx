@@ -58,6 +58,7 @@ function SingleChat() {
         console.log(data, '--data------');
         console.log(sender, '------sender-----');
         console.log(receiver, '-----receiver-----');
+        setChat((oldChat: any) => [...oldChat, data])
     }
 
     useEffect(() => {
