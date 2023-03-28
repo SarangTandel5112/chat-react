@@ -1,0 +1,154 @@
+import React, { useState, useEffect } from 'react';
+import { socket } from '../socket';
+import axios from 'axios';
+import SingleChat from './SingleChat';
+
+function Chat() {
+
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [user, setUser] = useState([])
+    const [currentUser, setCurrentUser] = useState()
+    const [msgInput, setMsgInput] = useState("")
+    const [chat, setChat] = useState("")
+    const [loginUser, setLoginUser] = useState("")
+    const [userName, setUserName] = useState("")
+
+    const handleSelect = (event, id) => {
+        console.log('-------value----------', id);
+        const token = localStorage.getItem('auth-token')
+        axios.get(`http://127.0.0.1:3100/user/${id}`, {
+            headers: {
+                Authorization: token
+            }
+        }).then(function (response) {
+            console.log(response.data, '--------response.data---------');
+            console.log(response.data);
+            setLoginUser(response.data.senderId)
+            setCurrentUser(response.data)
+            setChat(response.data.chatDetails)
+            // setUser(response.data.data)
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    // const handleSend = () => {
+    //     console.log(msgInput, '-----msgInput------');
+    //     console.log(currentUser, '------setCurrentUser-----');
+    //     console.log(chat, '-------chat---------');
+    //     setChat([...chat, {
+    //         "senderId": currentUser.senderId,
+    //         "receiverId": currentUser.receiverId,
+    //         "message": msgInput
+    //     }])
+    //     socket.emit('send-message', {
+    //         "senderId": currentUser.senderId,
+    //         "receiverId": currentUser.receiverId,
+    //         "message": msgInput
+    //     })
+    //     window.scroll({
+    //         left: 0,
+    //         bottom: 0,
+    //         behavior: 'smooth',
+    //     });
+    //     setMsgInput("")
+    // }
+
+    const onMsgReceive = async (data) => {
+        console.log(data, '=========data.senderId ============');
+        console.log(isConnected, '=========currentUser ============');
+        setChat(oldChat => [...oldChat, data])
+    }
+
+
+    useEffect(() => {
+        window.scroll({
+            left: 0,
+            bottom: 0,
+            behavior: 'smooth',
+        });
+        function onConnect(data) {
+            console.log(data, "socket connected-----------------");
+            setIsConnected(true);
+        }
+
+        function onDisconnect() {
+            setIsConnected(false);
+        }
+
+        console.log(socket, '0-----socket-----');
+        socket.connect();
+
+        socket.on('connect', onConnect);
+        socket.on('disconnect', onDisconnect);
+        socket.on('receive-msg', onMsgReceive)
+
+        const token = localStorage.getItem('auth-token')
+
+        axios.get('http://127.0.0.1:3100/user', {
+            headers: {
+                Authorization: token
+            }
+        }).then(function (response) {
+            console.log(response.data.currentUser, '--------response.data.currentUser-------');
+            setUser(response.data.data)
+            setUserName(response.data.currentUser)
+        }).catch(function (error) {
+            console.log(error);
+        });
+
+        return () => {
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+            socket.off('receive-msg', onMsgReceive)
+        };
+    }, []);
+
+    return (
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card chat-app">
+                        <div id="plist" class="people-list">
+                            {
+                                userName && <li class="clearfix" >
+                                    <img src={userName.profilePic} alt="avatar" className="userimg" />
+                                    <div class="about">
+                                        <div class="name">{userName.email}</div>
+                                        <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                    </div>
+                                </li>
+                            }
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Search..." />
+                            </div>
+                            <ul class="list-unstyled chat-list mt-2 mb-0">
+                                {
+                                    user && user.length &&
+                                    user.map((singleUser) => (
+                                        <div onClick={evt => handleSelect(evt, singleUser.id)} value={singleUser.id}>
+                                            <li class="clearfix" >
+                                                <img src={singleUser.profilePic} alt="avatar" />
+                                                <div class="about">
+                                                    <div class="name">{singleUser.email}</div>
+                                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                                </div>
+                                            </li>
+                                        </div>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                        <SingleChat />
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+
+}
+
+export default Chat;
