@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import TagComp from './TagComp';
+import { Button, Form, InputGroup } from 'react-bootstrap';
+import Datetime from 'react-datetime';
 
 function Login() {
 
@@ -35,6 +38,10 @@ function Login() {
             console.log(error);
         });
 
+    }
+
+    const handleDateChange = () => {
+        console.log("-----------------");
     }
 
     const { email, password, checkBox } = formValue
@@ -72,6 +79,7 @@ function Login() {
                                                     <a href="pages-reset-password.html">Forgot password?</a>
                                                 </small>
                                             </div>
+
                                             <div>
                                                 <div className="custom-control custom-checkbox align-items-center">
 

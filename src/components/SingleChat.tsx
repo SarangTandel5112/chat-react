@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { socket } from '../socket';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import TagComp from './TagComp';
 
 function SingleChat() {
 
