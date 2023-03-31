@@ -5,6 +5,7 @@ import SingleChat from './SingleChat';
 import SampleChat from './SampleChat';
 import { Link, Outlet } from 'react-router-dom';
 import { Button, Collapse, Form, InputGroup } from 'react-bootstrap';
+import UserName from './UserName';
 
 function Chat() {
 
@@ -95,6 +96,7 @@ function Chat() {
                         </div>
                         <Outlet />
                     </div>
+                    <UserName />
                 </div>
             </div>
         </div>
