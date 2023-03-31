@@ -3,6 +3,8 @@ import { socket } from '../socket';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import TagComp from './TagComp';
+import { useSelector, useDispatch } from 'react-redux'
+import { userAction } from '../redux/actions/userAction';
 
 function SingleChat() {
 
@@ -11,6 +13,7 @@ function SingleChat() {
     const [chat, setChat]: any = useState()
     const [receiver, setReceiver]: any = useState()
     const [sender, setSender]: any = useState()
+    const dispatch = useDispatch()
 
     const handleChangeValue = (event: any) => {
         setMsgInput(event.target.value)
@@ -25,7 +28,8 @@ function SingleChat() {
                 Authorization: token
             }
         }).then(function (response) {
-            console.log(response.data.result.chatDetails, '-------response.data.result.chatDetails-------');
+            console.log(response.data.result.receiverUser, '-------response.data.result.chatDetails-------');
+            dispatch(userAction(response.data.result.receiverUser))
 
             setChat(response.data.result.chatDetails)
             setReceiver(response.data.result.receiverUser)
