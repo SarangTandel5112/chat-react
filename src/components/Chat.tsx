@@ -9,6 +9,8 @@ import UserName from './UserName';
 
 function Chat() {
 
+    console.log("============chat================");
+
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [user, setUser] = useState([])
     const [chat, setChat] = useState([])

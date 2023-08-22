@@ -1,6 +1,7 @@
 import React from 'react';
 
 function Register() {
+    console.log("===========register==============");
     return (
         <div className="App">
             <div class="container h-100">

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { socket } from '../socket';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import TagComp from './TagComp';
 import { useSelector, useDispatch } from 'react-redux'
 import { userAction } from '../redux/actions/userAction';
 import UserName from './UserName';
