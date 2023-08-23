@@ -5,6 +5,7 @@ import DragForm from './components/DragForm';
 import Login from './components/Login';
 import Register from './components/Register';
 import Sample from './components/Sample';
+import Sample1 from './components/Sample1';
 import SampleChat from './components/SampleChat';
 import SingleChat from './components/SingleChat';
 import Success from './components/Success';
@@ -18,6 +19,7 @@ function Router() {
                 <Route path='/' element={<DynamicForm />} />
                 <Route path='/drag' element={<DragForm />} />
                 <Route path='/sample' element={<Sample />} />
+                <Route path='/sample1' element={<Sample1 />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/success' element={<Success />} />
                 <Route path='/chat' element={<Chat />} >

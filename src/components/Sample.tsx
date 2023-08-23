@@ -71,7 +71,6 @@ export default function MarkdownEditor() {
         console.log(tooltipState, '=========tooltipState=======');
         console.log(event);
 
-
         setTooltipState((prevTooltipState: any) => ({
             ...prevTooltipState,
             [event.id]: !prevTooltipState[event.id],
@@ -79,8 +78,6 @@ export default function MarkdownEditor() {
     };
 
     console.log(eventRefs, '===========eventRefs=============');
-
-
 
     const EventWrapper = ({ event, children }: any) => {
         console.log(event, '=====event=======');
@@ -111,6 +108,44 @@ export default function MarkdownEditor() {
         );
     };
 
+    const EventWithPopover = ({ event, children }: any) => {
+        const [showPopover, setShowPopover] = useState(false);
+        console.log(event, '---------event------------');
+        console.log(children, '---------children------------');
+
+
+        const handlePopoverClick = (e: any) => {
+            e.preventDefault();
+            setShowPopover(!showPopover);
+        };
+
+        return (
+            <OverlayTrigger
+                trigger="click"
+                placement="right" // Adjust placement as needed
+                show={showPopover}
+                overlay={
+                    <Popover id={`popover-${event.id}`} onClick={(e) => e.stopPropagation()}>
+                        <Popover.Header as="h3">{event.title}</Popover.Header>
+                        <Popover.Body>
+                            <p>{event.description}</p>
+                            <button onClick={handlePopoverClick}>Close</button>
+                        </Popover.Body>
+                    </Popover>
+                }
+            >
+                <div
+                    className="rbc-event"
+                    style={{ backgroundColor: 'none', border: 'none', padding: '2px' }}
+                    onClick={handlePopoverClick}
+                >
+                    {event.title}
+                </div>
+            </OverlayTrigger>
+        );
+    };
+
+
 
     return (
         <>
@@ -118,7 +153,7 @@ export default function MarkdownEditor() {
                 localizer={localizer}
                 components={{
                     toolbar: CustomHeader,
-                    eventWrapper: EventWrapper,
+                    eventWrapper: EventWithPopover,
                 }}
                 events={event}
                 eventPropGetter={eventStyleGetter}
