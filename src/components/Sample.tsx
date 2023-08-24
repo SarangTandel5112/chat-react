@@ -122,7 +122,7 @@ export default function MarkdownEditor() {
         return (
             <OverlayTrigger
                 trigger="click"
-                placement="right" // Adjust placement as needed
+                placement="left" // Adjust placement as needed
                 show={showPopover}
                 overlay={
                     <Popover id={`popover-${event.id}`} onClick={(e) => e.stopPropagation()}>

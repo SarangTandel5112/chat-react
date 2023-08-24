@@ -61,4 +61,12 @@ export default [
     start: new Date(2023, 2, 26, 0, 0, 0),
     end: new Date(2023, 2, 26, 4, 30, 0),
   },
+  {
+    id: 28,
+    title: 'Event 1',
+    start: new Date(2023, 7, 25, 10, 0),
+    end: new Date(2023, 7, 25, 12, 0),
+    description: 'This is event 1 description.',
+    color: '#FF5733'
+  },
 ]
